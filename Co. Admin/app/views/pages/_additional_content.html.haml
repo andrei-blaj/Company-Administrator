@@ -1,0 +1,88 @@
+.row{"style" => ""}
+
+  - if current_user.register_as == "CEO"
+    .col-xl-3.col-sm-6.mb-3
+      .card.text-white.bg-primary.o-hidden.h-100
+        .card-body
+          .card-body-icon
+            %i.fa.fa-fw.fa-file-o
+          .mr-5 New project?
+        %a.card-footer.text-white.clearfix.small.z-1{:href => new_project_path}
+          %span.float-left Create a new project
+          %span.float-right
+            %i.fa.fa-angle-right
+
+  .col-xl-3.col-sm-6.mb-3
+    .card.text-white.bg-warning.o-hidden.h-100
+      .card-body
+        .card-body-icon
+          %i.fa.fa-fw.fa-folder-open-o
+
+        - if current_user.register_as == "CEO"
+          - @prjNum = Project.where(:company_name => current_user.company_name).count
+        - elsif current_user.register_as == "MAN"
+          - @prjNum = Project.where(:company_name => current_user.company_name, :manager_email => current_user.email).count
+        - else
+          - @prjNum = Project.where(:company_name => current_user.company_name, :manager_email => current_user.manager_email).count
+
+        - if @prjNum == 0
+          .mr-5 
+            No projects
+        - else
+          .mr-5
+            Number of Projects:
+            = @prjNum
+
+      %a.card-footer.text-white.clearfix.small.z-1{:href => projects_path}
+        %span.float-left See projects
+        %span.float-right
+          %i.fa.fa-angle-right
+
+  - if current_user.register_as == "CEO"
+    .col-xl-3.col-sm-6.mb-3
+      .card.text-white.bg-success.o-hidden.h-100
+        .card-body
+          .card-body-icon
+            %i.fa.fa-fw.fa-users
+
+          - if current_user.work_relations.count == 0
+            .mr-5 
+              No managers
+          - else
+            .mr-5
+              Number of Managers: 
+              = current_user.work_relations.count
+
+        %a.card-footer.text-white.clearfix.small.z-1{:href => pages_show_managers_path}
+          %span.float-left View Managers
+          %span.float-right
+            %i.fa.fa-angle-right
+
+  - if current_user.register_as != "EMP"
+  
+    - @cnt = 0
+    - if current_user.register_as == "CEO"
+      - current_user.work_relations.each do |ceo_manager_relation|
+        - @manager = User.find_by(id: ceo_manager_relation.subordinate_id)
+        - @cnt = @cnt + @manager.work_relations.count
+    - else
+      - @cnt = current_user.work_relations.count
+
+    .col-xl-3.col-sm-6.mb-3
+      .card.text-white.bg-danger.o-hidden.h-100
+        .card-body
+          .card-body-icon
+            %i.fa.fa-fw.fa-user
+      
+          - if @cnt == 0
+            .mr-5 
+              No employees
+          - else
+            .mr-5
+              Number of Employees: 
+              = @cnt
+
+        %a.card-footer.text-white.clearfix.small.z-1{:href => pages_show_employees_path}
+          %span.float-left View Employees
+          %span.float-right
+            %i.fa.fa-angle-right

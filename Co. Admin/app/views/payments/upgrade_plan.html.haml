@@ -1,0 +1,282 @@
+- if !current_user.ceo?
+	:javascript
+		window.location.href="/pages/home"
+- else
+	%ol.breadcrumb
+		%li.breadcrumb-item
+			= link_to 'Home', authenticated_root_path
+		%li.breadcrumb-item.active Upgrade Plan
+
+	%br
+
+	%center
+		- if current_user.account_type != "enterprise"
+			.form-group
+				.form-row
+					- if current_user.account_type == "startup"				
+						.col-md-4
+							%table{style: "width:100%"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Expanding
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																5
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																30
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																20
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$99	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "expanding"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 99 * 100, name: "Expanding", description: "Up to 5 Managers, 30 Employees & 20 Projects", image: nil, locale: "auto"}}
+
+					- if current_user.account_type == "startup"
+						.col-md-4
+							%table{style: "width:100%;"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Business
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																15
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																150
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																50
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$199	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "business"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 199 * 100, name: "Business", description: "Up to 15 Managers, 150 Employees & 50 Projects", image: nil, locale: "auto"}}
+					- elsif current_user.account_type == "expanding"
+						.col-md-6
+							%table{style: "width:100%;"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Business
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																15
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																150
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																50
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$199	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "business"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 199 * 100, name: "Business", description: "Up to 15 Managers, 150 Employees & 50 Projects", image: nil, locale: "auto"}}
+
+					- if current_user.account_type == "startup"
+						.col-md-4
+							%table{style: "width:100%;"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Enterprise
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$399	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
+					- elsif current_user.account_type == "expanding"
+						.col-md-6
+							%table{style: "width:100%;"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Enterprise
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$399	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
+					- elsif current_user.account_type == "business"
+						.col-md-12
+							%table{style: "width:100%;"}
+								%tr
+									%td
+										.card.mx-auto{style: "width:300px;"}
+											.card-header
+												%b
+													Enterprise
+											.card-body
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+															%i
+																Managers
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Employees
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+													%tr
+														%td
+															%i
+																Projects
+														%td{style: "text-align: right;"}
+															%b
+																Unlimited
+												%hr
+												%table{style: "width: 100%;"}
+													%tr
+														%td
+														%td{style: "text-align: right;"}
+															%b
+																$399	
+												%hr
+												.form-group{style: "text-align:right;"}
+													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
+
+		- else
+			.breadcrumb{style: "width:100%;"}
+				.center.btn
+					Your company is taking advantage of the best available plan!
+
+

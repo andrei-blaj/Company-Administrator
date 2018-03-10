@@ -1,0 +1,18 @@
+.card.card-login.mx-auto.mt-5
+  .card-header Login
+  .card-body
+    / - binding.pry 
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .form-group
+        = f.label :email, 'Email address', for: 'exampleInputEmail1'
+        %br/
+        = f.email_field :email, autofocus: true, class: 'form-control', id: 'exampleInputEmail1', type: 'email', placeholder: 'Enter email'
+      .form-group
+        = f.label :password, 'Password', for: 'exampleInputPassword1'
+        %br/
+        = f.password_field :password, autocomplete: "off", class: 'form-control', id: 'exampleInputPassword1', type: 'password', placeholder: 'Password'
+        %br
+      .actions
+        = f.submit "Log in", class: 'btn btn-primary btn-block', style: 'margin-bottom: 10px;'
+    .text-center
+      = render "devise/shared/links"

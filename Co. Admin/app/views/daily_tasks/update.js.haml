@@ -1,0 +1,6 @@
+console.log("Marked as completed");
+
+$(".to-do").empty().append("#{j render partial: 'daily_tasks/to_do_daily_tasks', locals: {project: @project}}");
+
+$(".completed").empty().append("#{j render partial: 'daily_tasks/completed_daily_tasks', locals: {project: @project}}");
+

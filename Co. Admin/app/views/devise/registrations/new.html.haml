@@ -1,0 +1,106 @@
+.card.card-register.mx-auto.mt-5
+  .card-header Register an Account
+  .card-body
+    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+
+      - if devise_error_messages! != ""
+        .alert.alert-danger
+          = devise_error_messages!    
+      
+      .form-group
+        = f.label :register_as, 'Register as'
+        %br/
+        = f.select(:register_as, [["CEO", "CEO"], ["Manager", "MAN"], ["Employee", "EMP"]], {}, { :id => "position", :class => 'form-control' })
+      
+      #companyName
+        .form-group
+          = f.label :company_name, 'Company name'
+          %br/
+          = f.text_field :company_name, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Enter company name'
+      
+      #ceoemail{:style => "display: none;"}
+        .form-group
+          = f.label :ceo_email, 'CEO email'
+          %br/
+
+          = f.select :ceo_email, options_for_select(User.where("(register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?))", ["CEO"], ["startup"], 3, ["CEO"], ["expanding"], 5, ["CEO"], ["business"], 15, ["CEO"], ["enterprise"]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+      
+      #manageremail{:style => "display: none;"}
+        .form-group
+          = f.label :manager_email, 'Manager email'
+          = f.select :manager_email, options_for_select(User.where("(register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?))", ["MAN"], ["startup"], 10, ["MAN"], ["expanding"], 30, ["MAN"], ["business"], 50, ["MAN"], ["enterprise"]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+      
+      .firstlastnamediv
+        .form-group
+          .form-row
+            .col-md-6
+              = f.label :first_name, 'First name'
+              %br/
+              = f.text_field :first_name, autofocus: true, class: 'form-control', id: 'exampleInputName', type: 'text', placeholder: 'Enter first name'
+            .col-md-6
+              = f.label :last_name, 'Last name'
+              %br/
+              = f.text_field :last_name, autofocus: true, class: 'form-control', id: 'exampleInputLastName', type: 'text', placeholder: 'Enter last name'
+      
+      .emaildiv  
+        .form-group
+          = f.label :email, 'Email address'
+          %br/
+          = f.email_field :email, autofocus: true, class: 'form-control', id: 'exampleInputEmail1', type: 'email', placeholder: 'Enter email'
+      
+      .passworddiv
+        .form-group
+          - if @minimum_password_length
+            %em
+              (#{@minimum_password_length} characters minimum)
+          .form-row
+            .col-md-6
+              = f.label :password, 'Password'
+              = f.password_field :password, autocomplete: "off", class: 'form-control', id: 'exampleInputPassword1', type: 'password', placeholder: 'Password'
+            .col-md-6
+              = f.label :password_confirmation, 'Confirm password', for: 'exampleConfirmPassword'
+              = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control', id: 'exampleConfirmPassword', type: 'password', placeholder: 'Confirm password'   
+      #payment
+        .form-group
+          / - binding.pry
+          = f.label :account_type, 'Company Plan'
+          %br/
+          = f.select(:account_type, [["Start-Up", "startup"], ["Expanding", "expanding"], ["Business", "business"], ["Enterprise", "enterprise"]], {}, { :id => "account_type", :class => 'form-control'})
+
+      #startup
+        .breadcrumb
+          %i.fa.fa-fw.fa-info-circle
+          Up to 3 Managers, 10 Employees & 10 Projects - 
+          %b
+            Free
+
+      #expanding{:style => "display: none;"}
+        .breadcrumb
+          %i.fa.fa-fw.fa-info-circle
+          Up to 5 Managers, 30 Employees & 20 Projects - 
+          %b
+            $99
+
+      #business{:style => "display: none;"}
+        .breadcrumb
+          %i.fa.fa-fw.fa-info-circle
+          Up to 15 Managers, 150 Employees & 50 Projects - 
+          %b
+            $199
+
+      #enterprise{:style => "display: none;"}
+        .breadcrumb
+          %i.fa.fa-fw.fa-info-circle
+          Unlimited number of Managers, Employees & Projects - 
+          %b
+            $399
+
+      .actions
+        = f.submit "Register", class: 'btn btn-primary btn-block', style: 'margin-bottom: 10px;'
+
+    .text-center
+      = render "devise/shared/links"
+
+:javascript
+  window.project.pages.showAccountTypeInformation();
+  window.project.pages.showUserRegistrationType();

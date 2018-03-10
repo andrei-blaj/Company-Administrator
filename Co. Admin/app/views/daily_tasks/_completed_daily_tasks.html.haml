@@ -1,0 +1,10 @@
+- (@project || project).daily_tasks.each do |daily_task|
+	- if daily_task.completed == true
+		.breadcrumb
+			%table{:style => "width: 100%;"}
+				%td{:style => "width: 80%;"}
+					%i.fa.fa-fw.fa-check-square-o
+					= daily_task.task_description
+				%td{:style => "width: 20%;"}
+					%center
+						= link_to 'See Contributions', daily_task_path(daily_task)

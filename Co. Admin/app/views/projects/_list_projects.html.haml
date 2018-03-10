@@ -1,0 +1,37 @@
+- @projects.each do |proj|
+	- if proj.company_name == current_user.company_name
+		%tr.odd{:role => "row"}
+			%td= proj.title
+			%td= proj.manager_email
+
+			%td 
+				%center
+					= proj.deadline.strftime("%B")
+					- if proj.deadline.day == 1 || proj.deadline.day == 21 || proj.deadline.day == 31
+						= "#{proj.deadline.day}st"
+					- elsif proj.deadline.day == 2 || proj.deadline.day == 22
+						= "#{proj.deadline.day}nd"
+					- elsif proj.deadline.day == 3 || proj.deadline.day == 23
+						= "#{proj.deadline.day}rd"
+					- else
+						= "#{proj.deadline.day}th"
+					- if Date.today.year != proj.deadline.year
+						= proj.deadline.year
+			%td
+				%center 
+					= link_to 'See more', project_path(proj)
+			%td
+				- @daily_task_count = proj.daily_tasks.count
+				- @completed_daily_tasks = 0.0
+				- proj.daily_tasks.each do |dt|
+					- if dt.completed == true
+						- @completed_daily_tasks += 1
+				- @rez = @completed_daily_tasks
+				- @rez /= @daily_task_count
+				- @rez = (@rez * 100).round
+				%center
+					- if @rez == 100
+						Completed
+					- else
+						= @rez
+						\% 

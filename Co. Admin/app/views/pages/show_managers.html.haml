@@ -1,0 +1,59 @@
+- if current_user.register_as != "CEO"
+  :javascript
+    window.location.href="/"
+- else
+  / Breadcrumbs
+  %ol.breadcrumb
+    %li.breadcrumb-item
+      = link_to 'Home', authenticated_root_path
+    %li.breadcrumb-item.active See managers
+
+  .card.mb-3
+    .card-header
+      %i.fa.fa-users
+      Managers
+    .card-body
+      - @cnt = 0
+      - current_user.work_relations.each do |ceo_manager_relation|
+        - if User.find_by(id: ceo_manager_relation.subordinate_id)
+          - @cnt = 1
+
+      - if @cnt == 1
+
+        - Notification.where(:recipient_id => current_user.id, :notification_type => "new_man").each do |n|
+          - Notification.delete(n.id)
+
+        .table-responsive
+          #dataTable_wrapper.dataTables_wrapper.container-fluid.dt-bootstrap4
+            .row
+              .col-sm-12
+                %table#dataTable.table.table-striped.dataTable{"aria-describedby" => "dataTable_info", :cellspacing => "0", :role => "grid", :style => "width: 100%;", :width => "100%"}
+                  %thead
+                    %tr{:role => "row"}
+                      %th{"aria-controls" => "dataTable", "aria-label" => "Name: activate to sort column ascending", "aria-sort" => "descending", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} First name
+                      %th{"aria-controls" => "dataTable", "aria-label" => "Position: activate to sort column ascending", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} Last name
+                      %th{"aria-controls" => "dataTable", "aria-label" => "Office: activate to sort column ascending", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} Email address
+                      %th{"aria-controls" => "dataTable", "aria-label" => "Age: activate to sort column ascending", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} 
+                        %center 
+                          Position
+                      %th{"aria-controls" => "dataTable", "aria-label" => "Age: activate to sort column ascending", :colspan => "1", :rowspan => "1", :style => "width: 30px;", :tabindex => "0"} 
+                        %center
+                          Fire
+                  / %tfoot
+                  /   %tr
+                  /     %th{:colspan => "1", :rowspan => "1"} First name
+                  /     %th{:colspan => "1", :rowspan => "1"} Last name
+                  /     %th{:colspan => "1", :rowspan => "1"} Email address
+                  /     %th{:colspan => "1", :rowspan => "1"} Position
+                  /     %th{:colspan => "1", :rowspan => "1"} Edit
+                  %tbody
+                    - if user_signed_in?
+                      = render :partial => 'pages/manager_row'
+      - else
+        .breadcrumb{"style" => "padding-top:15px; text-align:center;"}
+          %h5
+            No managers registered at this time.
+    - if user_signed_in?              
+      .card-footer.small.text-muted List of managers for #{current_user.company_name}
+      
+  %br

@@ -1,0 +1,32 @@
+%li.nav-item{"data-original-title" => "Promote", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+  %a.nav-link{:href => pages_home_path}
+    %i.fa.fa-fw.fa-home
+    %span.nav-link-text Home
+
+- if current_user.register_as == "CEO" 
+  %li.nav-item{"data-original-title" => "Promote", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+    %a.nav-link{:href => pages_show_managers_path}
+      %i.fa.fa-fw.fa-user
+      %span.nav-link-text See managers
+
+- if current_user.register_as == "MAN" || current_user.register_as == "CEO"
+  %li.nav-item{"data-original-title" => "Promote", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+    %a.nav-link{:href => pages_show_employees_path}
+      %i.fa.fa-fw.fa-users
+      %span.nav-link-text See employees
+
+- if current_user.register_as == "CEO"
+  %li.nav-item{"data-original-title" => "New project", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+    %a.nav-link{:href => new_project_path }
+      %i.fa.fa-fw.fa-file
+      %span.nav-link-text New project
+
+%li.nav-item{"data-original-title" => "See projects", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+  %a.nav-link{:href => projects_path }
+    %i.fa.fa-fw.fa-files-o
+    %span.nav-link-text See projects
+
+%li.nav-item{"data-original-title" => "Settings", "data-placement" => "right", "data-toggle" => "tooltip", :title => ""}
+  %a.nav-link{:href => edit_user_registration_path }
+    %i.fa.fa-fw.fa-gear
+    %span.nav-link-text Settings

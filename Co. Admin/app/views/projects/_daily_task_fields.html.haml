@@ -1,0 +1,33 @@
+%fieldset
+  .form-group
+    .form-row
+      %table{:style => "width: 100%;"}
+        %tr
+          %th
+
+            %table
+              %tr
+                %td
+                  %i.fa.fa-fw.fa-book 
+                %td
+                  = f.label :task_description, 'Task description'
+
+          %th
+
+            %table
+              %tr
+                %td
+                  %i.fa.fa-fw.fa-calendar
+                %td
+                  = f.label :task_deadline, 'Task deadline'
+
+          %th
+
+        %tr
+          %td
+            = f.text_area :task_description, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Enter task description', rows: '1'
+          %td
+            = f.date_select(:task_deadline, {:order => [:month, :day, :year], :start_year => 2017, :end_year => 2030}, { :class => 'form-control', :style => 'width:30%; float:left; margin-left:2.5%;'})
+          %td
+            = f.hidden_field :_destroy
+            = link_to 'X', '#', class: 'remove_fields'

@@ -1,0 +1,39 @@
+.card.card-register.mx-auto.mt-5
+	.card-header Payment
+	.card-body
+
+		- @account_type = current_user.account_type
+		- if @account_type == "expanding"
+			- @amount = 99
+			- @title = "Expanding"
+			- @description = "Up to 5 Managers, 30 Employees & 20 Projects."
+		- elsif @account_type == "business"
+			- @amount = 199
+			- @title = "Business"
+			- @description = "Up to 15 Managers, 150 Employees & 50 Projects."
+		- else
+			- @amount = 399
+			- @title = "Enterprise"
+			- @description = "Unlimited number of Managers, Employees & Projects."
+
+		.form-group
+			.form-row
+				.col-md-9
+					.description{style: "text-align:left; margin-left:25px;"}
+						%h4
+							%b
+								= @title
+							plan.
+						%p{style: "color:#ddd;"}
+							= @description
+				.col-md-3
+					.price{style: "text-align:right; margin-right:25px;"}
+						%h4
+							= @amount
+							$
+		
+		%hr
+
+		.form-group{style: "text-align:right;"}
+			= form_tag pay_payment_path(current_user), method: :post do
+				%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: @amount * 100, name: @title, description: @description, image: nil, locale: "auto"}}

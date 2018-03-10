@@ -1,0 +1,63 @@
+:coffeescript
+
+  $('form').on 'click', '.remove_fields', (event) ->
+    $(this).prev('input[type=hidden]').val(true)
+    $(this).closest('fieldset').hide()
+    event.preventDefault()
+
+  $('form').on 'click', '.add_fields', (event) ->
+    time = new Date().getTime()
+    regexp = new RegExp($(this).data('id'), 'g')
+    $(this).before($(this).data('fields').replace(regexp, time))
+    event.preventDefault()
+
+= form_for @project do |f|
+
+  - if @project.errors.any?
+    - @project.errors.full_messages.each do |msg|
+      .alert.alert-danger
+        =msg
+
+  .form-group
+    .form-row
+      .col-md-6
+        %table
+          %tr
+            %td
+              %i.fa.fa-fw.fa-book 
+            %td
+              = f.label :title, 'Project Title'
+        = f.text_field :title, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Enter project title'
+      .col-md-6
+        %table
+          %tr
+            %td
+              %i.fa.fa-fw.fa-user
+            %td
+              = f.label :manager_email, 'Project Manager'
+        = f.select :manager_email, options_for_select(User.where(:register_as => "MAN", :company_name => current_user.company_name).map{ |c| [c.email]}), {}, {:class => "form-control"}
+
+  .form-group
+    %i.fa.fa-fw.fa-tasks 
+    = f.label :description, 'Project description'
+    = f.text_area :description, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Enter project description', rows: '5'
+
+  .form-group
+    %i.fa.fa-fw.fa-calendar
+    = f.label :deadline, 'Project Deadline'
+    %br
+    = f.date_select(:deadline, {:order => [:month, :day, :year], :start_year => 2017, :end_year => 2030}, { :class => 'form-control', :style => 'width:30%; float:left; margin-left:2.5%;'})
+    %br
+    %br
+
+  .form-group
+    = f.fields_for :daily_tasks do |builder|
+      = render 'projects/daily_task_fields', f: builder
+
+  .form-group
+    = link_to_add_fields 'Add Daily Task', f, :daily_tasks
+
+  .actions
+    = f.submit class: 'btn btn-primary btn-block', style: 'margin-bottom: 10px;'
+
+    

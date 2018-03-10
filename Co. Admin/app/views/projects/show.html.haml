@@ -1,0 +1,67 @@
+/ - if current_user.account_type != "startup" && current_user.register_as == "CEO" && current_user.paid == false
+/   :javascript
+/     window.location.href="/pages/payment"
+/ - else
+
+%ol.breadcrumb
+	%li.breadcrumb-item
+		= link_to 'Back', projects_path
+	%li.breadcrumb-item.active
+		- if @project
+			= @project.title
+
+.container
+	- if @project
+		- if Notification.where(project_id: @project.id, recipient_id: current_user.id).count > 0
+			- @notif_id = Notification.where(project_id: @project.id, recipient_id: current_user.id).first.id
+			- if Notification.where(project_id: @project.id, recipient_id: current_user.id).first.recipient_id == current_user.id
+				- Notification.delete(@notif_id)
+
+	%h1 
+		%i.fa.fa-fw.fa-slack
+		- if @project
+			= @project.title
+	%hr
+
+	.breadcrumb{:style => 'padding-bottom:1px;'}
+		%p
+			%i.fa.fa-fw.fa-info-circle
+			- if @project
+				= @project.description
+
+	%br
+
+	%h3 
+		%i.fa.fa-fw.fa-tasks
+		To Do
+	%Hr
+
+	.to-do
+		= render 'daily_tasks/to_do_daily_tasks'
+
+	%br
+
+	%h3 
+		%i.fa.fa-fw.fa-tasks
+		Completed
+	%hr
+
+	.completed
+		= render 'daily_tasks/completed_daily_tasks'
+
+	- if current_user.register_as == "CEO"
+		- if @project
+			.breadcrumb
+				.btn
+					%i.fa.fa-fw.fa-user-o
+					Project Manager:
+					- if @project
+						= @project.manager_email
+
+				%div{"style" => "float:right;"}
+					- if can? :update, @project
+						= link_to "Edit Project", edit_project_path(@project), :class => 'btn btn-default'
+					- if can? :destroy, @project
+						= link_to "Delete Project", project_path(@project), method: :delete, data: {confirm: 'Are you sure?'}, :class => 'btn btn-danger'
+
+%br

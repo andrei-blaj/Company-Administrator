@@ -1,0 +1,140 @@
+%ol.breadcrumb
+	%li.breadcrumb-item
+		- @project = Project.find_by(id: @daily_task.project_id)
+		= link_to 'Back', project_path(@project)
+	%li.breadcrumb-item.active
+		= @project.title
+		\: Task
+
+- Notification.where(:recipient_id => current_user.id, :notification_type => "new_con").each do |n|
+	- Notification.delete(n.id)
+
+%br
+
+.container
+	%h4
+		%i.fa.fa-fw.fa-info-circle
+		Task information
+
+	%hr
+
+	.breadcrumb
+		%i.fa.fa-fw.fa-tasks
+		Task description:
+		= @daily_task.task_description
+
+	.breadcrumb
+		%i.fa.fa-fw.fa-calendar
+		Task deadline:
+		= @daily_task.task_deadline.strftime("%B")
+		- if @daily_task.task_deadline.day == 1 || @daily_task.task_deadline.day == 21 || @daily_task.task_deadline.day == 31
+			= "#{@daily_task.task_deadline.day}st"
+		- elsif @daily_task.task_deadline.day == 2 || @daily_task.task_deadline.day == 22
+			= "#{@daily_task.task_deadline.day}nd"
+		- elsif @daily_task.task_deadline.day == 3 || @daily_task.task_deadline.day == 23
+			= "#{@daily_task.task_deadline.day}rd"
+		- else
+			= "#{@daily_task.task_deadline.day}th"
+		- if Date.today.year != @daily_task.task_deadline.year
+			= @daily_task.task_deadline.year
+
+	.breadcrumb
+		- if @daily_task.completed
+			%i.fa.fa-fw.fa-check
+			Completed on:
+			= @daily_task.completed_on.strftime("%B")
+			- if @daily_task.completed_on.day == 1 || @daily_task.completed_on.day == 21 || @daily_task.completed_on.day == 31
+				= "#{@daily_task.completed_on.day}st"
+			- elsif @daily_task.completed_on.day == 2 || @daily_task.completed_on.day == 22
+				= "#{@daily_task.completed_on.day}nd"
+			- elsif @daily_task.completed_on.day == 3 || @daily_task.completed_on.day == 23
+				= "#{@daily_task.completed_on.day}rd"
+			- else
+				= "#{@daily_task.completed_on.day}th"
+			- if Date.today.year != @daily_task.completed_on.year
+				= @daily_task.completed_on.year
+		- else
+			%i.fa.fa-fw.fa-times
+			This task is not yet done
+
+	%h4
+		- if @daily_task.contributions.count > 0
+			%br
+
+			%i.fa.fa-fw.fa-pencil
+			Contributions
+
+			%hr
+
+	- @cnt = 0
+
+	%table
+		- @daily_task.contributions.each do |contribution|
+			- if @cnt % 2 == 0
+				%tr
+			- @cnt = @cnt + 1
+			%td{style: "width:30%; padding:10px;", valign: "top"}
+				.breadcrumb
+					%ol.breadcrumb
+						%li.breadcrumb-item.active
+							Added by
+							- @contributer = User.find_by(id: contribution.user_id)
+							= @contributer.first_name
+							= @contributer.last_name
+							on
+							- @date_time = contribution.created_at
+							= @date_time.strftime("%B")
+							- if @date_time.day == 1 || @date_time.day == 21 || @date_time.day == 31
+								= "#{@date_time.day}st"
+							- elsif @date_time.day == 2 || @date_time.day == 22
+								= "#{@date_time.day}nd"
+							- elsif @date_time.day == 3 || @date_time.day == 23
+								= "#{@date_time.day}rd"
+							- else
+								= "#{@date_time.day}th"
+							- if Date.today.year != @date_time.year
+								= @date_time.year
+					.form-group
+						- if contribution.image?
+							.form-row
+								.col-md-12
+									= image_tag contribution.image_url.to_s, style: "width: 100%;"
+							%br
+						.form-row
+							.col-md-12
+								%i.fa.fa-fw.fa-paperclip
+								= contribution.content
+						- if can? :destroy, contribution
+							%hr
+						.form-row
+							.col-md-12{style: "text-align:right"}
+								/ - if can? :update, contribution
+								/ 	= link_to "Edit Contribution", edit_daily_task_contribution_path(@daily_task, contribution), :class => 'btn btn-default'
+								- if can? :destroy, contribution
+									= link_to "X", [contribution.daily_task, contribution], method: :delete, :class => 'btn btn-danger'
+
+	%br
+
+
+	%h4
+		%i.fa.fa-fw.fa-terminal
+		Contribute
+
+	%hr
+
+	.breadcrumb
+		= form_with(model: [ @daily_task, @daily_task.contributions.build ], local: true, html: {multipart: true}) do |f|
+
+			.form-group
+				%i.fa.fa-fw.fa-edit
+				= f.label :content, 'Add description'
+				= f.text_area :content, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Add description', rows: '3'
+
+			.form-group
+				%i.fa.fa-fw.fa-image
+				= f.file_field :image
+				= f.hidden_field :user_id, value: current_user.id
+
+			.actions
+				= f.submit "Add contribution", class: 'btn btn-primary btn-block', style: 'margin-bottom: 10px;'
+		

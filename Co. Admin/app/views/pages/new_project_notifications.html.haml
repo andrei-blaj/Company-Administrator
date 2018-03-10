@@ -1,0 +1,43 @@
+%ol.breadcrumb
+  %li.breadcrumb-item
+    = link_to 'Home', authenticated_root_path
+  %li.breadcrumb-item.active Project Notifications
+
+.card.mb-3
+  .card-header
+    %i.fa.fa-envelope
+    Project Notifications
+  .card-body
+
+    - @project_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_proj', :seen => false)
+    - @contributions_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_con', :seen => false)
+    - @completed_tasks = Notification.where(:recipient_id => current_user.id, :notification_type => 'task_completed', :seen => false)
+
+    - if @project_notifications.count == 0 && @contributions_notifications.count == 0 && @completed_tasks.count == 0
+      .breadcrumb{"style" => "margin-bottom:0px; text-align:center;"}
+        %h5
+          No new project notifications at this time
+    - else
+      - @project_notifications.each do |notif|
+        .breadcrumb{"style" => "margin-bottom:0px;"}
+          %i.fa.fa-envelope{"style" => "margin-right:20px;"}
+          You have been assigned a new project: 
+          = link_to "#{notif.project_name}", "../projects/#{notif.project_id}"
+      - @contributions_notifications.each do |notif|
+        .breadcrumb{"style" => "margin-bottom:0px;"}
+          %i.fa.fa-github{"style" => "margin-right:20px;"}
+          A 
+          = link_to "new contribution", "../daily_tasks/#{notif.daily_task_id}"
+          was added to the following project:
+          = notif.project_name
+      - @completed_tasks.each do |notif|
+        .breadcrumb{"style" => "margin-bottom:0px;"}
+          %i.fa.fa-github{"style" => "margin-right:20px;"}
+          A 
+          = link_to "new task", "../projects/#{notif.project_id}"
+          has been completed for
+          = notif.project_name
+                
+  .card-footer.small.text-muted Project Notifications for #{current_user.first_name}
+
+%br

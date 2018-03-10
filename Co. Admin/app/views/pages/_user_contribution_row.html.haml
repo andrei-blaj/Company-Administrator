@@ -1,0 +1,6 @@
+- UserProjectRelation.where(:user_id => current_user.id).each do |current_relation|
+	%tr.odd{:role => "row"}
+		- @prj = Project.find_by(id: current_relation.project_id)
+		%td= @prj.title
+		%td= current_relation.contribution
+		%td= current_relation.created_at.to_s

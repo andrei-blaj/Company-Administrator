@@ -1,0 +1,15 @@
+- current_user.work_relations.each do |ceo_manager_relation|
+	- @manager = User.find_by(id: ceo_manager_relation.subordinate_id)
+	- @manager.work_relations.each do |manager_employee_relation|
+		%tr.odd{:role => "row"}
+			- @employee = User.find_by(id: manager_employee_relation.subordinate_id)
+			%td= @employee.first_name
+			%td= @employee.last_name
+			%td= @employee.email
+			%td= @manager.email
+			%td 
+				%center
+					Employee
+			%td
+				%center 
+					= link_to 'X', work_relation_path(ceo_manager_relation), :method => :delete

@@ -1,0 +1,32 @@
+- begin
+	- (@project || project).daily_tasks.each do |daily_task|
+		- if daily_task.completed == false
+			.breadcrumb
+				%table{:style => "width: 100%;"}
+					%td{:style => "width: 50%;"}
+						%i.fa.fa-fw.fa-square-o
+						= daily_task.task_description
+					%td{:style => "width: 20%;"}
+						%center
+							%i.fa.fa-fw.fa-calendar
+							= daily_task.task_deadline.strftime("%B")
+							- if daily_task.task_deadline.day == 1 || daily_task.task_deadline.day == 21 || daily_task.task_deadline.day == 31
+								= "#{daily_task.task_deadline.day}st"
+							- elsif daily_task.task_deadline.day == 2 || daily_task.task_deadline.day == 22
+								= "#{daily_task.task_deadline.day}nd"
+							- elsif daily_task.task_deadline.day == 3 || daily_task.task_deadline.day == 23
+								= "#{daily_task.task_deadline.day}rd"
+							- else
+								= "#{daily_task.task_deadline.day}th"
+							- if Date.today.year != daily_task.task_deadline.year
+								= daily_task.task_deadline.year
+					%td{:style => "width: 10%;"}
+						%center
+							= link_to 'Contribute', daily_task_path(daily_task)
+					- if can? :update, daily_task
+						%td{:style => "width: 20%;"}
+							%center
+								= link_to 'Mark as completed', daily_task_path(daily_task), remote: true, method: :put
+
+- rescue
+	- binding.pry

@@ -1,0 +1,81 @@
+/ - if current_user.account_type != "startup" && current_user.register_as == "CEO" && current_user.paid == false
+/   :javascript
+/     window.location.href="/pages/payment"
+/ - else
+%ol.breadcrumb
+  %li.breadcrumb-item
+    = link_to 'Home', authenticated_root_path
+%h2 
+  Welcome, 
+  = current_user.first_name
+  !
+%hr/
+
+= render :partial => "pages/additional_content"
+  
+.form-group
+  .form-row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .card-header
+            %i.fa.fa-bookmark-o{"style" => "padding-right:10px;"}
+            Friendly Reminders
+
+        - if current_user.register_as == "CEO"
+          = render :partial => "pages/ceo_welcome"
+
+        - elsif current_user.register_as == "MAN"
+          = render :partial => "pages/man_welcome"
+        
+        - else
+          = render :partial => "pages/emp_welcome"  
+
+    - @completed_projects = 0
+    - Project.where(company_name: current_user.company_name).each do |proj|
+      - @daily_task_count = proj.daily_tasks.count
+      - @completed_daily_tasks = 0
+      - proj.daily_tasks.each do |dt|
+        - if dt.completed == true
+          - @completed_daily_tasks += 1
+      - if @daily_task_count == @completed_daily_tasks
+        - @completed_projects += 1
+    - @project_count = Project.where(company_name: current_user.company_name).count
+    - @ongoing_projects = @project_count - @completed_projects
+
+    - if @project_count > 0
+      .col-sm-6
+        .card-header
+          %i.fa.fa-pie-chart
+          Projects Pie Chart
+        .card-body
+
+          %center
+            %canvas#mycanvas{:height => "330", :width => "330"}
+            :javascript
+              $(document).ready(function(){
+                var ctx = $("#mycanvas").get(0).getContext("2d");
+
+                //pie chart data
+                //sum of values = 360
+                var data = [
+                  {
+                    value: #{@ongoing_projects},
+                    color: "red",
+                    highlight: "red",
+                    label: "Ongoing projects"
+                  },
+                  {
+                    value: #{@completed_projects},
+                    color: "green",
+                    highlight: "green",
+                    label: "Completed projects"
+                  }
+                ];
+
+                //draw
+                var piechart = new Chart(ctx).Pie(data);
+              });
+
+
+

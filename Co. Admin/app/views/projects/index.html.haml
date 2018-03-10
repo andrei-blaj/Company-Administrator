@@ -1,0 +1,56 @@
+/ - if current_user.account_type != "startup" && current_user.register_as == "CEO" && current_user.paid == false
+/   :javascript
+/     window.location.href="/pages/payment"
+/ - else
+/ Breadcrumbs
+%ol.breadcrumb
+  %li.breadcrumb-item
+    = link_to 'Home', authenticated_root_path
+  %li.breadcrumb-item.active See projects
+
+.card.mb-3
+.card-header
+  %i.fa.fa-table
+  Projects
+.card-body
+  - if (current_user.register_as == "CEO" && Project.where(:company_name => current_user.company_name).count == 0) || (current_user.register_as == "MAN" && Project.where(:company_name => current_user.company_name, :manager_email => current_user.email).count == 0)
+
+    .breadcrumb{"style" => "padding-top:15px; text-align:center;"}
+      %h5
+        No projects at this time.
+        - if current_user.register_as == "CEO"
+          = link_to 'Create one?', new_project_path
+  - else
+    .table-responsive
+      #dataTable_wrapper.dataTables_wrapper.container-fluid.dt-bootstrap4
+        .row
+          .col-sm-12
+            %table#dataTable.table.table-striped.dataTable{"aria-describedby" => "dataTable_info", :cellspacing => "0", :role => "grid", :style => "width: 100%;", :width => "100%"}
+              %thead
+                %tr{:role => "row"}
+                  %th{"aria-controls" => "dataTable", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} Title
+                  %th{"aria-controls" => "dataTable", :colspan => "1", :rowspan => "1", :style => "width: 200px;", :tabindex => "0"} Project Manager
+                  %th{"aria-controls" => "dataTable", :colspan => "1", :rowspan => "1", :style => "width: 150px;", :tabindex => "0"} 
+                    %center 
+                      Deadline
+                  %th{"aria-controls" => "dataTable", :colspan => "1", :rowspan => "1", :style => "width: 100px;", :tabindex => "0"} 
+                    %center
+                      Details
+
+                  %th{"aria-controls" => "dataTable", :colspan => "1", :rowspan => "1", :style => "width: 100px;", :tabindex => "0"}
+                    %center
+                      Status
+
+              %tbody
+                - if user_signed_in?
+                  - if current_user.register_as == "CEO"
+                    = render :partial => 'projects/list_projects'
+                  - elsif current_user.register_as == "MAN"
+                    = render :partial => 'projects/list_man_projects'
+                  - else
+                    = render :partial => 'projects/list_emp_projects'
+
+- if user_signed_in?              
+  .card-footer.small.text-muted List of projects for #{current_user.company_name}
+    
+%br

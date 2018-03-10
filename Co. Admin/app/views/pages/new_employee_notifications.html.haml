@@ -1,0 +1,36 @@
+- if current_user.register_as != "MAN"
+  :javascript
+    window.location.href="/"
+- else
+  / Breadcrumbs
+  %ol.breadcrumb
+    %li.breadcrumb-item
+      = link_to 'Home', authenticated_root_path
+    %li.breadcrumb-item.active New Employees
+
+  .card.mb-3
+    .card-header
+      %i.fa.fa-user{"style" => "margin-right:10px;"}
+      New Employee Notifications
+    .card-body
+      - @notif = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_emp', :seen => false)
+      - if @notif.count == 0
+        .breadcrumb{"style" => "margin-bottom:0px; text-align:center;"}
+          %h5
+            No new employees at this time
+      - else
+        - @notif.each do |n|
+          .breadcrumb{"style" => "margin-bottom:0px;"}
+            %i.fa.fa-user-o{"style" => "margin-right:10px;"}
+            - @new_employee = User.find_by(id: n.sender_id)
+            - @employee_first_name = @new_employee.first_name
+            - @employee_last_name = @new_employee.last_name 
+            = link_to "#{@employee_first_name} #{@employee_last_name}", pages_show_employees_path
+            just joined #{current_user.company_name} as an 
+            %b
+              Employee 
+            under your supervision!
+              
+    .card-footer.small.text-muted New Employee Notifications for #{current_user.first_name}
+
+  %br

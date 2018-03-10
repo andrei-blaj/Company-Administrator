@@ -1,0 +1,18 @@
+/ - if current_user.account_type != "startup" && current_user.register_as == "CEO" && current_user.paid == false
+/   :javascript
+/     window.location.href="/pages/payment"
+/ - else
+
+/ Breadcrumbs
+%ol.breadcrumb
+  %li.breadcrumb-item
+    = link_to 'Home', authenticated_root_path
+  %li.breadcrumb-item.active New project
+
+.card.mx-auto.mt-5
+  .card-header 
+    %i.fa.fa-fw.fa-file-o
+    Create a project
+  .card-body
+    = render 'projects/form'
+%br

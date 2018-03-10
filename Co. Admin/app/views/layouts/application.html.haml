@@ -1,0 +1,126 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}/
+
+    - if user_signed_in?
+      %title= current_user.company_name
+
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+
+    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+
+  %body#page-top.fixed-nav.sticky-footer.bg-dark
+    / Navigation
+    - if user_signed_in? && current_user.paid?
+      %nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+        = link_to "#{current_user.company_name}", authenticated_root_path, class: "navbar-brand"
+        %button.navbar-toggler.navbar-toggler-right{"aria-controls" => "navbarResponsive", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarResponsive", "data-toggle" => "collapse", :type => "button"}
+          %span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          %ul#exampleAccordion.navbar-nav.navbar-sidenav
+
+            = render :partial => 'layouts/side_menu'
+
+          %ul.navbar-nav.sidenav-toggler
+            %li.nav-item
+              %a#sidenavToggler.nav-link.text-center
+                %i.fa.fa-fw
+
+          %ul.navbar-nav.ml-auto
+
+            %li.nav-item.dropdown
+              %a#messagesDropdown.nav-link.dropdown-toggle.mr-lg-2{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => pages_new_project_notifications_path}
+                %i.fa.fa-fw.fa-envelope
+
+                  - @project_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_proj', :seen => false)
+                  - @contribution_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_con', :seen => false)
+                  - @completed_tasks_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'task_completed')
+
+                  - if @project_notifications.count > 0 || @contribution_notifications.count > 0 || @completed_tasks_notifications.count > 0
+                    %span.d-lg-none
+                      Notifications
+                      %span.badge.badge-pill.badge-primary
+                        = @project_notifications.count
+                        New
+                    %span.indicator.text-primary.d-none.d-lg-block
+                      %i.fa.fa-fw.fa-circle
+
+            - if current_user.register_as == "CEO"
+              %li.nav-item.dropdown
+                %a.nav-link.dropdown-toggle.mr-lg-2{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => pages_new_manager_notifications_path, "style" => "margin-right:20px;"}
+                  %i.fa.fa-fw.fa-users
+                    - @new_manager_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_man', :seen => false)
+                    - if @new_manager_notifications.count > 0
+                      %span.d-lg-none
+                        New Managers
+                        %span.badge.badge-pill.badge-warning
+                          = @new_manager_notifications.count
+                          New
+                      %span.indicator.text-warning.d-none.d-lg-block
+                        %i.fa.fa-fw.fa-circle
+
+            - elsif current_user.register_as == "MAN"
+              %li.nav-item.dropdown
+                %a#alertsDropdown.nav-link.dropdown-toggle.mr-lg-2{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => pages_new_employee_notifications_path, "style" => "margin-right:20px;"}
+                  %i.fa.fa-fw.fa-users
+
+                    - @new_employee_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_emp', :seen => false)
+                    - if @new_employee_notifications.count > 0
+                      %span.d-lg-none
+                        New Employees
+                        %span.badge.badge-pill.badge-warning
+                          = @new_employee_notifications.count
+                          New
+                      %span.indicator.text-warning.d-none.d-lg-block
+                        %i.fa.fa-fw.fa-circle
+
+            %li.nav-item{"style" => "margin-right:30px;"}
+              = form_tag(projects_path, :method => "get", id: "search-form") do
+                .input-group
+                  = text_field_tag :search, params[:search], placeholder: "Search for project...", :class => "form-control", type: "text"
+                  %span.input-group-btn
+                    = button_tag(type: "submit", class: "btn btn-primary", :name => nil) do
+                      %i.fa.fa-search
+            
+
+            - if user_signed_in?
+              %li.nav-item
+                %table
+                  %tr
+                    %td
+                      %i.fa.fa-fw.fa-sign-out.nav-link>
+                    %td
+                      = link_to 'Logout', destroy_user_session_path, method: :delete, class: "nav-link"
+
+      .content-wrapper
+        .container-fluid{"style" => "margin-right:10px;"}
+          - if flash[:alert]
+            .breadcrumb.btn{"style" => "color:red;"}
+              = flash[:alert]
+          = yield
+
+      %footer.sticky-footer
+        .container
+          .text-center
+            %small 
+              Copyright © 
+              = current_user.company_name
+              2017
+
+    - if !user_signed_in?
+      .container
+        = yield
+    - elsif !current_user.paid? && current_user.ceo?
+      .container
+        = render "pages/payment"
+    - elsif !current_user.paid?
+      .container
+        %center
+          %h1{"style" => "color:white;"}
+            The payment must be completed by your superior
+          %h2
+            = link_to 'Logout', destroy_user_session_path, method: :delete, class: "nav-link"
+

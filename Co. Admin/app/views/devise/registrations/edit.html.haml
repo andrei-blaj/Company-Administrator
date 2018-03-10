@@ -1,0 +1,63 @@
+- if current_user.account_type != "startup" && current_user.paid == false
+  :javascript
+    window.location.href="/pages/payment"
+- else
+  %ol.breadcrumb
+    .btn
+      %li.breadcrumb-item
+        = link_to 'Home', authenticated_root_path
+      %li.breadcrumb-item.active Edit user
+    - if current_user.ceo?
+      = link_to 'Upgrade Plan', payments_upgrade_plan_path, class: 'btn btn-primary', style: 'float:right;'
+
+  .card.card-register.mx-auto{"style" => "margin-top:35px;"}
+    .card-header 
+      %h3
+        %i.fa.fa-gear{"style" => "padding-right:10px;"}
+        Edit User
+    .card-body
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+        = devise_error_messages!
+        .form-group
+          .field
+            %i.fa.fa-fw.fa-lock
+            = f.label :email
+            %br
+              %b
+                = f.label :email, current_user.email
+          - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+            %div
+              Currently waiting confirmation for: #{resource.unconfirmed_email}
+        .from-group
+          .field
+            = f.label :password
+            %i (leave blank if you don't want to change it)
+            %br
+            = f.password_field :password, autocomplete: "off", class: 'form-control'
+            - if @minimum_password_length
+              %br
+              %em
+                = @minimum_password_length
+                characters minimum
+        .form-group
+          .field
+            = f.label :password_confirmation
+            %br
+            = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
+        .from-group
+          .field
+            %i.fa.fa-fw.fa-unlock
+            = f.label :current_password
+            %i (enter current password to confirm your changes)
+            %br
+            = f.password_field :current_password, autocomplete: "off", class: 'form-control'
+        .from-group
+          .actions
+            = f.submit "Update", class: 'form-control', class: 'btn btn-primary btn-block', style: 'margin-top: 10px; margin-bottom:10px;'
+        .form-group
+          %p
+            %center
+              = link_to "Delete Account", registration_path(resource_name), method: :delete, data: {confirm: 'Are you sure? :('}, :class => 'btn btn-danger', :style => "float:right;"
+              = link_to "Back", :back, :class => 'btn btn-primary', :style => "float:left;"
+
+  %br
