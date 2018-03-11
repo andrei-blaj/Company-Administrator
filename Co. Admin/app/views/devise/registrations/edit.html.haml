@@ -1,4 +1,4 @@
-- if current_user.account_type != "startup" && current_user.paid == false
+- if current_user.company_plan_id != 1 && current_user.paid == false
   :javascript
     window.location.href="/pages/payment"
 - else

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127165317) do
+ActiveRecord::Schema.define(version: 20171213144723) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -18,6 +18,16 @@ ActiveRecord::Schema.define(version: 20171127165317) do
     t.date "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "company_plans", force: :cascade do |t|
+    t.string "plan"
+    t.integer "max_num_of_projects"
+    t.integer "max_num_of_employees"
+    t.integer "max_num_of_managers"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "price"
   end
 
   create_table "contributions", force: :cascade do |t|
@@ -59,9 +69,9 @@ ActiveRecord::Schema.define(version: 20171127165317) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "manager_email"
-    t.string "tech"
     t.date "deadline"
     t.string "company_name"
+    t.boolean "completed"
   end
 
   create_table "user_project_relations", force: :cascade do |t|
@@ -94,12 +104,11 @@ ActiveRecord::Schema.define(version: 20171127165317) do
     t.boolean "ceo"
     t.boolean "man"
     t.boolean "emp"
-    t.string "account_type"
     t.boolean "paid"
     t.integer "num_of_managers"
     t.integer "num_of_employees"
-    t.integer "num_of_allowed_managers"
-    t.integer "num_of_allowed_employees"
+    t.integer "company_plan_id"
+    t.string "auth_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

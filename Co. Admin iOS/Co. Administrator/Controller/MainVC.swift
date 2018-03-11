@@ -47,6 +47,11 @@ class MainVC: UIViewController {
         
         updateUserData()
         
+        if Session.shared.isLoggedIn() {
+            companyNameLabel.text = "Home"
+        } else {
+            companyNameLabel.text = "Co. Administrator"
+        }
     }
     
     @objc func refresh(sender:AnyObject) {
@@ -59,7 +64,6 @@ extension MainVC {
     
     // Load data from core data
     func updateUserData() {
-        
         self.fetchUserData { (fetchSuccessful) in
             if fetchSuccessful {
                 if Session.shared.savedUserData.count > 0 {
@@ -73,8 +77,6 @@ extension MainVC {
                         
                         self.tableView.reloadData()
                         self.tableView.isHidden = false
-                        
-                        self.updateViewHeading()
                         
                         self.refreshControl.endRefreshing()
                     }, failureHandler: { (error) in
@@ -98,9 +100,6 @@ extension MainVC {
                 self.refreshControl.endRefreshing()
             }
         }
-        
-        updateViewHeading()
-        
     }
     
     // Retrieve the data from the persistent container using a fetch request
@@ -118,16 +117,6 @@ extension MainVC {
         }
         
     }
-    
-    func updateViewHeading() {
-        
-        if Session.shared.isLoggedIn() {
-            companyNameLabel.text = "\(Session.shared.currentUser!.companyName)"
-        } else {
-            companyNameLabel.text = "Co. Administrator"
-        }
-    }
-    
 }
 
 extension MainVC: UITableViewDelegate, UITableViewDataSource {

@@ -52,7 +52,7 @@ class SideMenuVC: UIViewController {
             companyPlanLabel.text = companyPlan[Session.shared.currentUser!.companyPlanId]
         } else {
             loginBtn.setTitle("Login", for: .normal)
-            companyNameLabel.text = ""
+            companyNameLabel.text = "Please log in"
             companyPlanLabel.text = ""
         }
     }

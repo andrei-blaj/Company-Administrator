@@ -7,15 +7,7 @@ class Ability
 
         if user.ceo?
             
-            if user.account_type == 'startup'
-                @number_of_projects = 10 # 1 la Demo
-            elsif user.account_type == 'expanding'
-                @number_of_projects = 20 # 2 la Demo
-            elsif user.account_type == 'business'
-                @number_of_projects = 50
-            elsif user.account_type == 'enterprise'
-                @number_of_projects = 10000000
-            end
+            @number_of_projects = CompanyPlan.find_by(id: user.company_plan_id).max_num_of_projects
 
             can :create, Contribution
 
@@ -58,9 +50,7 @@ class Ability
             end
 
             can :destroy, User do |u|
-                user.work_relations.each do |relation|
-                    u == User.find_by(id: relation.subordinate_id)
-                end
+                user.company_name == u.company_name
             end
 
         else

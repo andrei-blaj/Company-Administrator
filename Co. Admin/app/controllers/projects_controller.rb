@@ -1,8 +1,13 @@
 class ProjectsController < ApplicationController
 
+  respond_to :html, :js, :json, :xml
+
   before_action :authenticate_user!
   before_action :check_if_paid
   load_and_authorize_resource
+
+  protect_from_forgery
+  skip_before_action :verify_authenticity_token
 
   def index
 
@@ -21,6 +26,11 @@ class ProjectsController < ApplicationController
   def show
     authorize! :read, @project
     @project = Project.find_by(id: params[:id])
+
+    respond_to do |format|
+      format.html {}
+      format.js { render json: @project }
+    end
   end
 
   def create
@@ -30,7 +40,10 @@ class ProjectsController < ApplicationController
 
       @project.company_name = current_user.company_name
 
+      @project.completed = true
+
       @project.daily_tasks.each do |daily_task|
+          @project.completed = false
           daily_task.update(completed: false)
       end
 
@@ -49,7 +62,6 @@ class ProjectsController < ApplicationController
     def update
         authorize! :update, @project
         @project = Project.find_by(id: params[:id])
-
         if (@project.update(project_params))
               redirect_to @project
         else
@@ -66,15 +78,15 @@ class ProjectsController < ApplicationController
         Notification.where(:project_id => @project.id).each do |notif|
           Notification.delete(notif.id)
         end
-        
+
         @project.destroy
-        
+
         redirect_to projects_path
     end
 
     private
         def project_params
-            params.require(:project).permit! 
+            params.require(:project).permit!
         end
 
     private

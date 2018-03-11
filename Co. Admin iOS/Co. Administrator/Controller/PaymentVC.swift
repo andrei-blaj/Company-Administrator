@@ -26,6 +26,7 @@ class PaymentVC: UIViewController, STPPaymentCardTextFieldDelegate {
     var packageDescription = String()
     
     // Constants
+    let paymentTextField = STPPaymentCardTextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,6 @@ class PaymentVC: UIViewController, STPPaymentCardTextFieldDelegate {
         view.addSubview(paymentTextField)
         
         payButtonOutlet.isHidden = true
-        
         
     }
     

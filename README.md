@@ -108,3 +108,66 @@ Task contribution                                                               
 
 ### iOS Demo ###
 - - - -
+
+> The app starts off with the main view controller; the whole app is built around SWRevealViewController
+
+Main View                                                                                      |
+:---------------------------------------------------------------------------------------------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/1.png?raw=true "Main")      |
+
+> A user can login using the button provided in the bottom of the rear view controller of the SWRevealViewController.
+> A login view controller pops up, where the user can enter his/her credentials.
+> Core Data was used for data persistence.
+
+Rear View Controller                           | Login									| Logged In |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/8.png?raw=true "Rear") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/2.png?raw=true "Login") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/3.png?raw=true "Logged In") |
+
+> The main view is also updated.
+> If the current user is a CEO, then he/she has the option to upgrade the company's plan using Stripe for payments.
+
+Logged In Main View                          | Uprgade									| Plans | Payment |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/4.png?raw=true "Rear") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/5.png?raw=true "Upgrade") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/6.png?raw=true "Plans") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/7.png?raw=true "Payment") |
+
+> A CEO or a Manager can see a list of managers or employees as well as their profiles.
+
+Managers                           | Employees									| Profile |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/9.png?raw=true "Managers") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/10.png?raw=true "Employees") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/11.png?raw=true "Profile") |
+
+> The user can also see the current projects and can perform actions on them.
+
+Projects                          | Delete									| Confirm |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/12.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/13.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/14.png?raw=true "Confirm") |
+
+> When selecting a project, a view controller containing the information about that project pops up.
+> We can see table view with two sections one for on going tasks and one for completed tasks.
+> A task can be marked as completed by swiping on the cell containg that specific task.
+
+Project Info                          | Mark as completed									| Instant Update |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/15.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/16.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/17.png?raw=true "Confirm") |
+
+> By selecting a task, a view controller containing the contributions for that task pops up.
+> Contributions can either be text, images or both.
+> A user can see a picture by tapping or 3D Touching on the image circle.
+
+Task Info                                      | Peek			            						| Pop       |
+:---------------------------------------------:|:--------------------------------------------------:|:---------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/18.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/19.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/20.png?raw=true "Confirm") |
+
+> The user can also make contributions using the text field at the bottom of the screen.
+
+Contribute                                     | Preview	            							| 
+:---------------------------------------------:|:--------------------------------------------------:|
+![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/21.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/rails/blob/master/ss/22.png?raw=true "Delete") |
+
+> Useful Pods
+>> Alamofire    
+>> AlamofireImage    
+>> SwiftyJSON    
+>> FontAwesome.swift    
+>> PIQKeyboardManagerSwiftry
+>> Stripe 

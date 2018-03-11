@@ -18,17 +18,26 @@
           %br/
           = f.text_field :company_name, autofocus: true, class: 'form-control', type: 'text', placeholder: 'Enter company name'
       
+      - ceos = User.where("(register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?))", ["CEO"], [1], 3, ["CEO"], [2], 5, ["CEO"], [3], 15, ["CEO"], [4])
+      - mans = User.where("(register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?))", ["MAN"], [1], 10, ["MAN"], [2], 30, ["MAN"], [3], 50, ["MAN"], [4])
+
       #ceoemail{:style => "display: none;"}
         .form-group
           = f.label :ceo_email, 'CEO email'
-          %br/
-
-          = f.select :ceo_email, options_for_select(User.where("(register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND account_type IN (?))", ["CEO"], ["startup"], 3, ["CEO"], ["expanding"], 5, ["CEO"], ["business"], 15, ["CEO"], ["enterprise"]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+          - if ceos.count != 0
+            = f.select :ceo_email, options_for_select(User.where("(register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_managers < ?) OR (register_as IN (?) AND company_plan_id IN (?))", ["CEO"], [1], 3, ["CEO"], [2], 5, ["CEO"], [3], 15, ["CEO"], [4]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+          - else
+            .breadcrumb
+              No available CEOs at this time.
       
       #manageremail{:style => "display: none;"}
         .form-group
           = f.label :manager_email, 'Manager email'
-          = f.select :manager_email, options_for_select(User.where("(register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND account_type IN (?))", ["MAN"], ["startup"], 10, ["MAN"], ["expanding"], 30, ["MAN"], ["business"], 50, ["MAN"], ["enterprise"]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+          - if mans.count != 0
+            = f.select :manager_email, options_for_select(User.where("(register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?) AND num_of_employees < ?) OR (register_as IN (?) AND company_plan_id IN (?))", ["MAN"], [1], 10, ["MAN"], [2], 30, ["MAN"], [3], 50, ["MAN"], [4]).map{ |c| [c.email]}), {}, {:class => "form-control"}
+          - else
+            .breadcrumb
+              No available Managers at this time.
       
       .firstlastnamediv
         .form-group
@@ -62,10 +71,9 @@
               = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control', id: 'exampleConfirmPassword', type: 'password', placeholder: 'Confirm password'   
       #payment
         .form-group
-          / - binding.pry
-          = f.label :account_type, 'Company Plan'
+          = f.label :company_plan_id, 'Company Plan'
           %br/
-          = f.select(:account_type, [["Start-Up", "startup"], ["Expanding", "expanding"], ["Business", "business"], ["Enterprise", "enterprise"]], {}, { :id => "account_type", :class => 'form-control'})
+          = f.select(:company_plan_id, [["Start-Up", 1], ["Expanding", 2], ["Business", 3], ["Enterprise", 4]], {}, { :id => "company_plan", :class => 'form-control'})
 
       #startup
         .breadcrumb

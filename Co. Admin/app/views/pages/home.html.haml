@@ -1,18 +1,14 @@
-/ - if current_user.account_type != "startup" && current_user.register_as == "CEO" && current_user.paid == false
-/   :javascript
-/     window.location.href="/pages/payment"
-/ - else
 %ol.breadcrumb
   %li.breadcrumb-item
     = link_to 'Home', authenticated_root_path
-%h2 
-  Welcome, 
+%h2
+  Welcome,
   = current_user.first_name
   !
 %hr/
 
 = render :partial => "pages/additional_content"
-  
+
 .form-group
   .form-row
     .col-sm-6
@@ -27,21 +23,51 @@
 
         - elsif current_user.register_as == "MAN"
           = render :partial => "pages/man_welcome"
-        
+
         - else
-          = render :partial => "pages/emp_welcome"  
+          = render :partial => "pages/emp_welcome"
 
     - @completed_projects = 0
-    - Project.where(company_name: current_user.company_name).each do |proj|
-      - @daily_task_count = proj.daily_tasks.count
-      - @completed_daily_tasks = 0
-      - proj.daily_tasks.each do |dt|
-        - if dt.completed == true
-          - @completed_daily_tasks += 1
-      - if @daily_task_count == @completed_daily_tasks
-        - @completed_projects += 1
-    - @project_count = Project.where(company_name: current_user.company_name).count
-    - @ongoing_projects = @project_count - @completed_projects
+    - if current_user.ceo?
+
+      - Project.where(company_name: current_user.company_name).each do |proj|
+        - @daily_task_count = proj.daily_tasks.count
+        - @completed_daily_tasks = 0
+        - proj.daily_tasks.each do |dt|
+          - if dt.completed == true
+            - @completed_daily_tasks += 1
+        - if @daily_task_count == @completed_daily_tasks
+          - @completed_projects += 1
+      - @project_count = Project.where(company_name: current_user.company_name).count
+      - @ongoing_projects = @project_count - @completed_projects
+
+    - elsif current_user.man?
+
+      - Project.where(manager_email: current_user.email).each do |proj|
+        - @daily_task_count = proj.daily_tasks.count
+        - @completed_daily_tasks = 0
+        - proj.daily_tasks.each do |dt|
+          - if dt.completed == true
+            - @completed_daily_tasks += 1
+        - if @daily_task_count == @completed_daily_tasks
+          - @completed_projects += 1
+      - @project_count = Project.where(manager_email: current_user.email).count
+      - @ongoing_projects = @project_count - @completed_projects
+
+    - else
+
+      - Project.where(manager_email: current_user.manager_email).each do |proj|
+        - @daily_task_count = proj.daily_tasks.count
+        - @completed_daily_tasks = 0
+        - proj.daily_tasks.each do |dt|
+          - if dt.completed == true
+            - @completed_daily_tasks += 1
+        - if @daily_task_count == @completed_daily_tasks
+          - @completed_projects += 1
+      - @project_count = Project.where(manager_email: current_user.manager_email).count
+      - @ongoing_projects = @project_count - @completed_projects
+
+
 
     - if @project_count > 0
       .col-sm-6
@@ -76,6 +102,3 @@
                 //draw
                 var piechart = new Chart(ctx).Pie(data);
               });
-
-
-

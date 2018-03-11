@@ -4,7 +4,7 @@
 			%td= proj.title
 			%td= proj.manager_email
 
-			%td 
+			%td
 				%center
 					= proj.deadline.strftime("%B")
 					- if proj.deadline.day == 1 || proj.deadline.day == 21 || proj.deadline.day == 31
@@ -18,7 +18,7 @@
 					- if Date.today.year != proj.deadline.year
 						= proj.deadline.year
 			%td
-				%center 
+				%center
 					= link_to 'See more', project_path(proj)
 			%td
 				- @daily_task_count = proj.daily_tasks.count
@@ -27,11 +27,12 @@
 					- if dt.completed == true
 						- @completed_daily_tasks += 1
 				- @rez = @completed_daily_tasks
-				- @rez /= @daily_task_count
+				- if @daily_task_count != 0
+					- @rez /= @daily_task_count
 				- @rez = (@rez * 100).round
 				%center
-					- if @rez == 100
+					- if @rez == 100 || @daily_task_count == 0
 						Completed
 					- else
 						= @rez
-						\% 
+						\%

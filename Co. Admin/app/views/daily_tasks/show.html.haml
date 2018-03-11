@@ -6,8 +6,10 @@
 		= @project.title
 		\: Task
 
-- Notification.where(:recipient_id => current_user.id, :notification_type => "new_con").each do |n|
-	- Notification.delete(n.id)
+- Notification.where(recipient_id: current_user.id, notification_type: "new_con", daily_task_id: @daily_task.id).each do |notif|
+	- Notification.delete(notif.id)
+- Notification.where(recipient_id: current_user.id, notification_type: "passed_daily_task_deadline", daily_task_id: @daily_task.id).each do |notif|
+	- Notification.delete(notif.id)
 
 %br
 
@@ -123,7 +125,7 @@
 	%hr
 
 	.breadcrumb
-		= form_with(model: [ @daily_task, @daily_task.contributions.build ], local: true, html: {multipart: true}) do |f|
+		= form_with(model: [ @daily_task, @daily_task.contributions.build ], html: {multipart: true}) do |f|
 
 			.form-group
 				%i.fa.fa-fw.fa-edit

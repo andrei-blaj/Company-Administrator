@@ -21,6 +21,9 @@ gem 'ckeditor'
 
 gem 'carrierwave'
 
+gem 'whenever', require: false
+
+gem 'resque'
 # gem 'data-confirm-modal'
 
 gem 'pry'

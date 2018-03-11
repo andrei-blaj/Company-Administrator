@@ -12,6 +12,10 @@ class Project < ApplicationRecord
 
   after_create :create_notification
 
+  def call_jobs
+    SendNotificationsJob.perform_now(current_user)
+  end
+
   def create_notification
 
     manager = User.find_by(email: self.manager_email)

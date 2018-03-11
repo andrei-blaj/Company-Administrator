@@ -4,27 +4,18 @@ class PaymentsController < ApplicationController
 
 		@user = User.find(params[:id])
 
-		if params[:account_type] != nil
-			@account_type = params[:account_type]
+		if params[:company_plan_id] != nil
+			@company_plan_id = params[:company_plan_id]
 		else
-			@account_type = @user.account_type
+			@company_plan_id = @user.company_plan_id
 		end
 
-		if @account_type == "expanding"
-			@amount = 99
-			@num_of_managers = 5
-			@num_of_employees = 30
-			@description = "Expanding"
-		elsif @account_type == "business"
-			@amount = 199
-			@num_of_managers = 15
-			@num_of_employees = 150
-			@description = "Business"
-		else
-			@amount = 399
-			@num_of_managers = 10000000
-			@description = "Enterprise"
-		end
+		current_company_plan = CompanyPlan.find_by(id: @company_plan_id)
+
+		@amount = current_company_plan.price
+		@num_of_managers = current_company_plan.max_num_of_managers
+		@num_of_employees = current_company_plan.max_num_of_employees
+		@description = current_company_plan.plan
 
 		# Set your secret key: remember to change this to your live secret key in production
 		# See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -45,15 +36,15 @@ class PaymentsController < ApplicationController
 
 		# Update the current user (CEO) and every other manager and employee in that company
 
-		@user.update(account_type: @account_type)
+		@user.update(paid: true, company_plan_id: @company_plan_id)
 
-		@user.update(paid: true, num_of_allowed_managers: @num_of_managers, num_of_allowed_employees: @num_of_employees)
 		@user.work_relations.each do |ceo_manager_work_relation|
 			@manager = User.find_by(id: ceo_manager_work_relation.subordinate_id)
-			@manager.update(paid: true, account_type: @account_type)
+			@manager.update(paid: true, company_plan_id: @company_plan_id)
+
 			@manager.work_relations.each do |manager_employee_work_relation|
 				@employee = User.find_by(id: manager_employee_work_relation.subordinate_id)
-				@employee.update(paid: true, account_type: @account_type)
+				@employee.update(paid: true, company_plan_id: @company_plan_id)
 			end
 		end
 

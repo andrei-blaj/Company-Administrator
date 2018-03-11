@@ -10,10 +10,10 @@
 	%br
 
 	%center
-		- if current_user.account_type != "enterprise"
+		- if current_user.company_plan_id != 4
 			.form-group
 				.form-row
-					- if current_user.account_type == "startup"				
+					- if current_user.company_plan_id == 1				
 						.col-md-4
 							%table{style: "width:100%"}
 								%tr
@@ -54,10 +54,10 @@
 																$99	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "expanding"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 2), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 99 * 100, name: "Expanding", description: "Up to 5 Managers, 30 Employees & 20 Projects", image: nil, locale: "auto"}}
 
-					- if current_user.account_type == "startup"
+					- if current_user.company_plan_id == 1
 						.col-md-4
 							%table{style: "width:100%;"}
 								%tr
@@ -98,9 +98,9 @@
 																$199	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "business"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 3), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 199 * 100, name: "Business", description: "Up to 15 Managers, 150 Employees & 50 Projects", image: nil, locale: "auto"}}
-					- elsif current_user.account_type == "expanding"
+					- elsif current_user.company_plan_id == 2
 						.col-md-6
 							%table{style: "width:100%;"}
 								%tr
@@ -141,10 +141,10 @@
 																$199	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "business"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 3), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 199 * 100, name: "Business", description: "Up to 15 Managers, 150 Employees & 50 Projects", image: nil, locale: "auto"}}
 
-					- if current_user.account_type == "startup"
+					- if current_user.company_plan_id == 1
 						.col-md-4
 							%table{style: "width:100%;"}
 								%tr
@@ -185,9 +185,9 @@
 																$399	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 4), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
-					- elsif current_user.account_type == "expanding"
+					- elsif current_user.company_plan_id == 2
 						.col-md-6
 							%table{style: "width:100%;"}
 								%tr
@@ -228,9 +228,9 @@
 																$399	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 4), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
-					- elsif current_user.account_type == "business"
+					- elsif current_user.company_plan_id == 3
 						.col-md-12
 							%table{style: "width:100%;"}
 								%tr
@@ -271,7 +271,7 @@
 																$399	
 												%hr
 												.form-group{style: "text-align:right;"}
-													= form_tag pay_payment_path(current_user, account_type: "enterprise"), method: :post do
+													= form_tag pay_payment_path(current_user, company_plan_id: 4), method: :post do
 														%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: {key: "pk_test_YLaBMX7kMorxrEVJoBbqp0P9", amount: 399 * 100, name: "Enterprise", description: "Unlimited number of Managers, Employees & Projects", image: nil, locale: "auto"}}
 
 		- else

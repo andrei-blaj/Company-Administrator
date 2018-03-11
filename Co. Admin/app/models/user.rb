@@ -5,7 +5,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :work_relations
+  before_save :ensure_auth_token
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
+  has_many :work_relations, dependent: :destroy
   has_many :subordinates, :through => :work_relations
 
   has_many :user_project_relations
@@ -27,56 +32,68 @@ class User < ApplicationRecord
       self.num_of_managers = 0
       self.num_of_employees = 0
 
-      self.paid = true if self.account_type == "startup"
-
-      if paid?
-        self.num_of_allowed_employees = 10
-        self.num_of_allowed_managers = 3
-      end
+      self.paid = true if self.company_plan_id == 1
 
     elsif self.register_as == "MAN"
-  		
-      user1 = User.find_by(email: self.ceo_email) # in this case the CEO
-      user2 = self
+
+      ceo = User.find_by(email: self.ceo_email) # in this case the CEO
 
       self.ceo = false
       self.man = true
       self.emp = false
       self.paid = false
 
-      self.paid = true if user1.paid?
-      self.account_type = user1.account_type
+      self.paid = true if ceo.paid?
+      self.company_plan_id = ceo.company_plan_id
 
-      user1.update(num_of_managers: user1.num_of_managers + 1)
-      self.num_of_employees = user1.num_of_employees
+      ceo.update(num_of_managers: ceo.num_of_managers + 1)
+      self.num_of_employees = ceo.num_of_employees
 
-      WorkRelation.create(user_id: user1.id, subordinate_id: user2.id)
-      Notification.create(recipient_id: user1.id, notification_type: 'new_man', seen: false, sender_id: user2.id)
+      WorkRelation.create(user_id: ceo.id, subordinate_id: self.id)
+      Notification.create(recipient_id: ceo.id, notification_type: 'new_man', seen: false, sender_id: self.id)
 
-  		self.company_name = user1.company_name
+  	  self.company_name = ceo.company_name
 
   	elsif self.register_as == "EMP"
 
-  		user1 = User.find_by(email: self.manager_email) # in this case the MANAGER
-      ceo = User.find_by(email: user1.ceo_email)
-      user2 = self
+  		man = User.find_by(email: self.manager_email) # in this case the MANAGER
+      ceo = User.find_by(email: man.ceo_email)
 
       ceo.update(num_of_employees: ceo.num_of_employees + 1)
-      user1.update(num_of_employees: ceo.num_of_employees)
+      man.update(num_of_employees: ceo.num_of_employees)
 
       self.ceo = false
       self.man = false
       self.emp = true
       self.paid = false
 
-      self.paid = true if user1.paid?
-      self.account_type = ceo.account_type
+      self.paid = true if man.paid?
+      self.company_plan_id = ceo.company_plan_id
 
-      WorkRelation.create(user_id: user1.id, subordinate_id: user2.id)
-      Notification.create(recipient_id: user1.id, notification_type: 'new_emp', seen: false, sender_id: user2.id)
+      WorkRelation.create(user_id: man.id, subordinate_id: self.id)
+      Notification.create(recipient_id: man.id, notification_type: 'new_emp', seen: false, sender_id: self.id)
 
-      self.company_name = user1.company_name
+      self.company_name = man.company_name
   	end
+  end
+
+  def ensure_auth_token
+    if auth_token.blank?
+      self.auth_token = generate_auth_token
+    end
+  end
+
+  def reset_auth_token!
+    self.auth_token = generate_auth_token
+    save
+  end
+
+  private
+  def generate_auth_token
+    loop do
+      token = Devise.friendly_token
+      break token unless self.class.unscoped.where(auth_token: token).first
+    end
   end
 
   # def superior

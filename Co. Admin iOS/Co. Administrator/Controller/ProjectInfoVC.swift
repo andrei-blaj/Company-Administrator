@@ -256,7 +256,7 @@ extension ProjectInfoVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // If the task is now yet completed and the current user is a MANAGER
-        if (Session.shared.currentUser!.man == true || Session.shared.currentUser!.ceo == true) && indexPath.section == 0 {
+        if Session.shared.currentUser!.man == true && indexPath.section == 0 {
             return true
         }
         return false

@@ -6,11 +6,11 @@ window.project = window.project or {}
   
   pages.showAccountTypeInformation = () ->
     
-    $(document).off "change", "#account_type"
-    $(document).on "change", "#account_type", ->
+    $(document).off "change", "#company_plan"
+    $(document).on "change", "#company_plan", ->
       console.log "Select was changed"
 
-      if $(@).val() == "startup"
+      if $(@).val() == "1"
       	console.log "StartUp"
 
       	$("#startup").css("display", "block");
@@ -18,7 +18,7 @@ window.project = window.project or {}
       	$("#business").css("display", "none");
       	$("#enterprise").css("display", "none");
 
-      else if $(@).val() == "expanding"
+      else if $(@).val() == "2"
       	console.log "Expanding"
 
       	$("#startup").css("display", "none");
@@ -26,7 +26,7 @@ window.project = window.project or {}
       	$("#business").css("display", "none");
       	$("#enterprise").css("display", "none");
 
-      else if $(@).val() == "business"
+      else if $(@).val() == "3"
       	console.log "Business"
 
       	$("#startup").css("display", "none");
@@ -34,7 +34,7 @@ window.project = window.project or {}
       	$("#business").css("display", "block");
       	$("#enterprise").css("display", "none");
 
-      else if $(@).val() == "enterprise"
+      else if $(@).val() == "4"
       	console.log "Enterprise"
 
       	$("#startup").css("display", "none");

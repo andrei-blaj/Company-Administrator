@@ -12,8 +12,11 @@
     - @project_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_proj', :seen => false)
     - @contributions_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'new_con', :seen => false)
     - @completed_tasks = Notification.where(:recipient_id => current_user.id, :notification_type => 'task_completed', :seen => false)
+    - @passed_project_deadline_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'passed_project_deadline')
+    - @passed_daily_task_deadline_notifications = Notification.where(:recipient_id => current_user.id, :notification_type => 'passed_daily_task_deadline')
 
-    - if @project_notifications.count == 0 && @contributions_notifications.count == 0 && @completed_tasks.count == 0
+
+    - if @project_notifications.count == 0 && @contributions_notifications.count == 0 && @completed_tasks.count == 0 && @passed_project_deadline_notifications.count == 0 && @passed_daily_task_deadline_notifications.count == 0
       .breadcrumb{"style" => "margin-bottom:0px; text-align:center;"}
         %h5
           No new project notifications at this time
@@ -37,6 +40,17 @@
           = link_to "new task", "../projects/#{notif.project_id}"
           has been completed for
           = notif.project_name
+      - @passed_project_deadline_notifications.each do |notif|
+        .breadcrumb{"style" => "margin-bottom:0px;"}
+          %i.fa.fa-github{"style" => "margin-right:20px;"}
+          The deadline on the following project has been passed:
+          = link_to "#{notif.project_name}", "../projects/#{notif.project_id}"
+      - @passed_daily_task_deadline_notifications.each do |notif|
+        .breadcrumb{"style" => "margin-bottom:0px;"}
+          %i.fa.fa-github{"style" => "margin-right:20px;"}
+          The deadline for 
+          = link_to "this task", "../daily_tasks/#{notif.daily_task_id}"
+          has been passed.
                 
   .card-footer.small.text-muted Project Notifications for #{current_user.first_name}
 

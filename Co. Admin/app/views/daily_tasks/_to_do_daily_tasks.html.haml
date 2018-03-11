@@ -30,3 +30,25 @@
 
 - rescue
 	- binding.pry
+
+/ $.ajax
+/         url: url + ".json"
+/         type: "GET"
+/         data:
+/           page: page
+/         success: (data) ->
+/           $("#real-time-dashboard-content").html(data["content"])
+/           if data["changed"] == true
+/             window.location = window.location.pathname
+
+/ def create
+/     company  = params[:person].delete(:company)
+/     @company = Company.find_or_create_by_name(company[:name])
+/     @person  = @company.people.create(params[:person])
+
+/     respond_to do |format|
+/       format.html { redirect_to(person_list_url) }
+/       format.js
+/       format.xml  { render :xml => @person.to_xml(:include => @company) }
+/     end
+/ end

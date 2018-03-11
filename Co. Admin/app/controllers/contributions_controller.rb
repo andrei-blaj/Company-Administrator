@@ -11,7 +11,7 @@ class ContributionsController < ApplicationController
 
 		@daily_task = DailyTask.find_by(id: params[:daily_task_id])
 		@contribution = @daily_task.contributions.create(contribution_params)
-		
+
 		redirect_to daily_task_path(@daily_task)
 	end
 
