@@ -128,13 +128,13 @@ Rear View Controller                           | Login									| Logged In |
 
 Logged In Main View                          | Uprgade									| Plans | Payment |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/5.png?raw=true "Rear") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/4.png?raw=true "Upgrade") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Plans") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Payment") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/5.png?raw=true "Rear") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/16.png?raw=true "Upgrade") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/4.png?raw=true "Plans") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/14.png?raw=true "Payment") |
 
 > A CEO or a Manager can see a list of managers or employees as well as their profiles.
 
 Managers                           | Employees									| Profile |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Managers") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Employees") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Profile") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/6.png?raw=true "Managers") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/6.png?raw=true "Employees") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/7.png?raw=true "Profile") |
 
 > The user can also see the current projects and can perform actions on them.
 
