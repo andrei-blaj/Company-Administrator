@@ -134,13 +134,13 @@ Logged In Main View                          | Uprgade									| Plans | Payment
 
 Managers                           | Employees									| Profile |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/6.png?raw=true "Managers") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/6.png?raw=true "Employees") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/7.png?raw=true "Profile") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/6.png?raw=true "Managers") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/22.png?raw=true "Employees") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/7.png?raw=true "Profile") |
 
 > The user can also see the current projects and can perform actions on them.
 
 Projects                          | Delete									| Confirm |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Confirm") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/8.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/17.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/23.png?raw=true "Confirm") |
 
 > When selecting a project, a view controller containing the information about that project pops up.
 > We can see table view with two sections one for on going tasks and one for completed tasks.
@@ -148,7 +148,7 @@ Projects                          | Delete									| Confirm |
 
 Project Info                          | Mark as completed									| Instant Update |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Confirm") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/9.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/20.png?raw=true "Mark as completed") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/21.png?raw=true "Instant Update") |
 
 > By selecting a task, a view controller containing the contributions for that task pops up.
 > Contributions can either be text, images or both.
@@ -156,13 +156,13 @@ Project Info                          | Mark as completed									| Instant Upda
 
 Task Info                                      | Peek			            						| Pop       |
 :---------------------------------------------:|:--------------------------------------------------:|:---------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Confirm") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/10.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/24.png?raw=true "Delete") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/11.png?raw=true "Confirm") |
 
 > The user can also make contributions using the text field at the bottom of the screen.
 
-Contribute                                     | Preview	            							| 
+Contribute                                     | Delete	            							| 
 :---------------------------------------------:|:--------------------------------------------------:|
-![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/1.png?raw=true "Delete") |
+![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/19.png?raw=true "Projects") | ![picture alt](https://github.com/andrei-blaj/Company-Administrator/blob/master/ss/ios/18.png?raw=true "Delete") |
 
 > Useful Pods
 >> Alamofire    
